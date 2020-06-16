@@ -23,8 +23,11 @@ def download_pais_articles():
     for article_item in coverpage_articles[:ARTICLE_COUNT]:
         article_url = urljoin(PAIS_URL, article_item.contents[0]['href'])
         article_title = article_item.contents[0].string
-        a = ElPaisArticle(article_url, article_title)
-        print(a)
+        try:
+            a = ElPaisArticle(article_url, article_title)
+            print(a)
+        except (PowerIterationFailedConvergence, IndexError):
+            print(f'\nFailed to summarize {article_url}, skipping...\n')
 
 
 def download_guardian_articles():
@@ -62,7 +65,7 @@ def download_bbc_articles():
         try:
             a = BBCArticle(article_url, article_title)
             print(a)
-        except IndexError:
+        except (PowerIterationFailedConvergence, IndexError):
             print(f'\nFailed to summarize {article_url}, skipping...\n')
 
 
